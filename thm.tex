@@ -1,0 +1,63 @@
+%
+%%  THEOREM ENVIRONMENTS
+%
+%%  v1.0.0
+%
+
+\usepackage{amsthm} % Provide proof environment, QED stack.
+\swapnumbers        % Theorem number precedes heading.
+
+% The following resets \end of theorem and proof environments to LaTeX
+% defaults, which suppress indentation on immediately following line.
+
+\makeatletter
+\patchcmd{\@endtheorem}{\@endpefalse }{}{}{} 
+\patchcmd{\endproof}{\@endpefalse}{}{}{}
+\makeatother
+
+
+% FUNCTION \DeclareTheorem[style = last_used]{name}{heading}
+%
+% Provides starred unnumbered version
+
+\newcommand{\DeclareTheorem}[3][]{
+  \ifstrempty{#1}{
+    \newtheorem{#2}[main]{#3}
+    \newtheorem*{#2*}{#3}
+  }{
+    \theoremstyle{#1}
+    \newtheorem{#2}[main]{#3}
+    \newtheorem*{#2*}{#3}
+  }
+}
+
+
+% FUNCTION \InitThm{section_counter}
+%
+% Called in the preamble of documents to initialise
+% theorem environments numbered within section_counter.
+% Empty parameter yields absolute numbering.
+
+\newcommand{\InitThm}[1]{
+  \newtheorem{main}{}[#1]
+  %
+  \DeclareTheorem[plain]{theorem}{Theorem}
+  \DeclareTheorem{thm}{Theorem}
+  \DeclareTheorem{proposition}{Proposition}
+  \DeclareTheorem{prop}{Proposition}
+  \DeclareTheorem{lemma}{Lemma}
+  \DeclareTheorem{corollary}{Corollary}
+  \DeclareTheorem{cor}{Corollary}
+  \DeclareTheorem{conjecture}{Conjecture}
+  \DeclareTheorem{conj}{Conjecture}
+  \DeclareTheorem{hypothesis}{Hypothesis}
+  %
+  \DeclareTheorem[definition]{para}{}
+  \DeclareTheorem{definition}{Definition}
+  \DeclareTheorem{defn}{Definition}
+  %
+  \DeclareTheorem[remark]{remark}{Remark}
+  \DeclareTheorem{rmk}{Remark}
+  \DeclareTheorem{example}{Example}
+  \DeclareTheorem{eg}{Example}
+}

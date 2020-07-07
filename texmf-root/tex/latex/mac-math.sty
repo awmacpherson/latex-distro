@@ -1,0 +1,96 @@
+%
+%%% AMS PACKAGES
+%%
+%%% v1.0.0 
+%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mac-math}[2020/07/04 math symbols]
+
+\RequirePackage{amsmath}  
+% Provides the detested {align} env which I will change one day.
+% To do: modify preamble for align env. renewcommand eqnarray
+% To do: reimplement multicol (array) and intertext (amsmath env).
+% Provides \@mathmeasure with similar functionality to \widthof.
+
+% \usepackage{amstext} % Autoloaded by amsmath
+% Provides \text{} command which makes an \mbox in the current \style.
+
+% \usepackage{amsbsy} % Autoloaded by amsmath
+% makes bold symbolds; depreciated in favour of bm package
+
+% \usepackage{amsopn} % Autoloaded by amsmath
+% Provides \DeclareMathOperator.
+% This allows use of certain punctuation symbols;
+% resets vertical alignment for single character operators;
+% defines separate operator font (but default is rmfamily).
+
+\RequirePackage{amsfonts}
+% Provides \mathfrak (Euler fraktur alphabet).
+% Redefines \mathcal (Euler script alphabet).
+% Provides some other sizes of cm fonts (which LaTeX maybe provides?)
+\RequirePackage{amssymb}
+% Provides symbol fonts msam and msbm.
+
+% New shorthands for math font series.
+
+\let\mb\mathbf
+\let\mr\mathrm
+\let\mt\mathtt
+\let\mc\mathcal
+\let\mf\mathfrak
+\let\bb\mathbb
+
+% \DeclareMathAlphabet{\mathrmsl}{OT1}{cmr}{m}{sl}  % LaTeX command
+
+
+%%% DEFINING NEW OPERATORS %%%%%%%%%%%%%%%%%%%%%%
+
+\makeatletter
+\newcommand{\OpDef}{\@ifstar{\@opstar}{\@opunstar}}
+
+% Syntax: \opdef[font_style=rm]{op_name}{op_text}
+% Modified vertical alignment when op_text is exactly one character
+
+\let\opdef\OpDef
+
+\newcommand{\@opstar}[3][rm]{%
+  \newcommand{#2}{\mathop{\csname math#1 \endcsname{#3}}}
+}
+
+\newcommand{\@opunstar}[3][rm]{%
+  \newcommand{#2}{{\mathop{\csname math#1 \endcsname{#3}}\nolimits}}
+} % extra braces here prevent an error when used in super/subscripts
+
+
+%%% STANDARD SYMBOLS %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\OpDef*{\colim}{colim}
+
+
+\newcommand\naturals{\mathbb N}
+\let\N\naturals
+\newcommand\integers{\mathbb Z}
+\let\Z\integers
+\newcommand\Q{\mathbb Q}
+\let\Q\rationals
+\newcommand\reals{\mathbb R}
+\let\R\reals
+\newcommand\complexes{\mathbb C}
+\let\C\complexes
+
+
+\newcommand{\defeq}{\mathrel{\vcenter{\hbox{\scriptsize:}}\!=}} % :=
+\newcommand{\eqdef}{\mathrel{=\!\vcenter{\hbox{\scriptsize:}}}} % =:
+
+
+%%% DIAGRAMS %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{tikz-cd}
+
+\def\<{\@ifnextchar<{\[\begin{tikzcd}\@gobble}{\begin{tikzcd}}}
+\def\>{\@ifnextchar>{\end{tikzcd}\]\@gobble}{\end{tikzcd}}}
+
+% Diagrams are delimited with \<...\> in any mode.
+% Use \<<...\>> to also enter/exit display mode.
+
+\tikzcdset{diagrams={baseline = -.5ex}}
